@@ -1,0 +1,67 @@
+<div class="card">
+    <div class="card-header text-left">
+        {{pagTitle  }}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2 text-left">Filter by:</div>
+            <div class="col-md-4 text-left">
+                <input type="text" 
+                  [(ngModel)] = 'listFilter' />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-left">
+                <h4>Filtered by: {{listFilter}} </h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table"
+            *ngIf='products && products.length'>
+        <thead>
+            <tr>
+                <th class="col1">
+                    <button class="btn btn-success"
+                            (click) = 'toggleimage()'>
+                            {{showImage ? 'Hide' : 'Show'}} Image
+                            
+                    </button>
+                </th>
+                <th class="col2">Product</th>
+                <th class="col3">Code</th>
+                <th class="col4">Available</th>
+                <th class="col5">Price</th>
+                <th class="col6">5 star Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of filteredProducts">
+                <td class="col1">
+                    <img *ngIf="showImage"
+                    [src]='product.imageUrl'
+                    [style.width.px]='imageWidth'
+                    [style.margin.px] = 'imageMargin'
+                    [title] = 'product.productName'>
+                </td>
+                <td class="col2">
+                    <a [routerLink]="['/products', product.productId]">
+                        {{product.productName}}
+                    </a>
+                </td>
+                <td class="col3">{{product.productCode | lowercase | convertToSpace: '-'}}</td>
+                <td class="col4">{{product.releaseDate}}</td>
+                <td class="col5">{{product.price | currency:'USD': 'symbol':'1.2-2'}}</td>
+                <td class="col6" style="padding-left: 8%;">
+                    <pm-star
+                        (ratingClicked) = 'onRatingClicked($event)'
+                        [rating]='product.starRating'>
+                    </pm-star>
+                   
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
